@@ -1,4 +1,4 @@
-# Resetting the Admin Theme
+# WBCE - Reset Admin Theme
 As we will experiment quite a lot whith themes and templates it might be a good idea to add this little tool.
 
 ## Usage

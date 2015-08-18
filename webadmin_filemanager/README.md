@@ -1,4 +1,4 @@
-# Webadmin Filemnager
+# Webadmin Filemanager
 Download from: [https://gist.github.com/nic-o/1219610](https://gist.github.com/nic-o/1219610 "Webadmin filemanager") as the original 
 page [http://cker.name/webadmin/](http://cker.name/webadmin/ "Webadmin filemanager") had a disfunctional .zip file.
 

@@ -1,4 +1,4 @@
-# Changelog Creator
+# WBCE - Changelog Creator
 Simple bash script to create a CHANGELOG.md file from the commit messages of a local `WBCE Git` project.
 
 ## Usage
