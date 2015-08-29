@@ -5,3 +5,4 @@ This repository provides some optional tools which may come handy for users of t
   - [Changelog Creator](changelog_creator/README.md)
   - [Reset Admin Theme](reset_admin_theme/README.md)
   - [Webadmin Filemanager](webadmin_filemanager/README.md)
+  - [Reset Admin Password](reset_admin_password/README.md)
