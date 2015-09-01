@@ -22,11 +22,14 @@
  * @author          Norbert Heimsath , heimsath.org
  * @link            my-baker.net
  * @requirements    PHP 5 at least i guess so
- * @version         0.5
+ * @version         0.5.1
  * @lastmodified    $Date: 2012-08-07
  * 
  * DA and CS are old iso standard, but google uses this one 
  * so idecided to use em , as they are needed for automatic translation.
+
+THIS IS THE NON UTF-8 VERSION!!!!!
+
 */
 
 
@@ -71,7 +74,7 @@ foreach ($aLanguages as $sLang) {
 	// Set the language information
 	
 	$language_code = $sLang;
-	$language_name = get_county_name ($sLang);
+	$language_name = get_country_name ($sLang);
 
 	//get new Language Variables from Array
 	$sLangVars = "\n\n\n";
@@ -156,7 +159,7 @@ function maketext ($text){
 	//$text = html_entity_decode  ( $text,ENT_QUOTES, "UTF-8");
     $text =  superentities($text);
 	$text = myslash ($text);
-	/*if (isset($_GET['trans']) AND  get_county_name(strtoupper( $_GET['trans']))) {
+	/*if (isset($_GET['trans']) AND  get_country_name(strtoupper( $_GET['trans']))) {
 		$source = 'en';
 		$target = strtolower($_GET['trans']);
 		$translator = new LanguageTranslator($yourApiKey);
@@ -168,7 +171,7 @@ function maketext ($text){
 
 
 
-function get_county_name ($code){
+function get_country_name ($code){
 	$countries = get_country_list();
 	if (isset($countries[$code])) return $countries[$code];
 	else return false;
@@ -451,10 +454,10 @@ function superentities( $orgstr ){
     $str2="";
     foreach ($ar as $c){
         $o = ord($c);
-        if ( (strlen($c) > 1) || /* multi-byte [unicode] */
-            ($o <32 || $o > 126) || /* <- control / latin weirdos -> */
-            ($o >33 && $o < 40) ||/* quotes + ambersand */
-            ($o >59 && $o < 63) /* html */
+        if ( (strlen($c) > 1) /*|| // multi-byte [unicode]
+            ($o <32 || $o > 126) || // <- control / latin weirdos -> 
+            ($o >33 && $o < 40) ||  // quotes + ambersand 
+            ($o >59 && $o < 63) */    // html 
         ) {
             // convert to numeric entity
             $c = mb_encode_numericentity($c,array (0x0, 0xffff, 0, 0xffff), 'UTF-8');
@@ -464,3 +467,6 @@ function superentities( $orgstr ){
     return $str2;
 }
 
+function is_ascii( $string = '' ) {
+    return ( bool ) ! preg_match( '/[\\x80-\\xff]+/' , $string );
+}
