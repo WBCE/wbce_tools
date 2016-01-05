@@ -23,15 +23,20 @@
  * forward buttons! Always open files in a new browser tab!
  * -------------------------------------------------------------------------
  *
- * This is Version 0.9, revision 13
+ * This is Version 0.9.14
  * =========================================================================
+ *
+ * Changes of revision 14
+ * [norbert at heimsath dot org]
+ *    Fixed use of deprecated ereg function.
+ *
  *
  * Changes of revision 13
  * [norbert at heimsath dor org]
  *    fixed notice about undefined var $site_charset
  *    set default file and dir permissions to 777(dir) and 666(file)
  *    to not create any files that are undeletable vie FTP in an 
- *    enviroment that runns PHP as an Apache module.
+ *    enviroment that runs PHP as an Apache module.
  * 
  * Changes of revision 12
  * [bhb at o2 dot pl]
@@ -120,7 +125,11 @@
  *    - introduced revision numbers
  *
 /* ------------------------------------------------------------------------- */
- 
+
+error_reporting(E_ALL);
+ini_set("display_errors", 1); //for debug
+
+
 /* Your language:
  * 'en' - English
  * 'de' - German
@@ -310,7 +319,7 @@ case 'view':
     /* highlight_file is a mess! */
     ob_start();
     highlight_file($file);
-    $src = ereg_replace('<font color="([^"]*)">', '<span style="color: \1">', ob_get_contents());
+    $src = preg_replace('<font color="([^"]*)">', '<span style="color: $1">', ob_get_contents());
     $src = str_replace(array('</font>', "\r", "\n"), array('</span>', '', ''), $src);
     ob_end_clean();
  
@@ -1024,22 +1033,22 @@ function permission_octal2string ($mode) {
 }
  
 function is_script ($filename) {
-  return ereg('\.php$|\.php3$|\.php4$|\.php5$', $filename);
+  return preg_match('/\.php$|\.php3$|\.php4$|\.php5$/', $filename);
 }
  
 function getmimetype ($filename) {
   static $mimes = array(
-    '\.jpg$|\.jpeg$'  => 'image/jpeg',
-    '\.gif$'          => 'image/gif',
-    '\.png$'          => 'image/png',
-    '\.html$|\.html$' => 'text/html',
-    '\.txt$|\.asc$'   => 'text/plain',
-    '\.xml$|\.xsl$'   => 'application/xml',
-    '\.pdf$'          => 'application/pdf'
+    '/\.jpg$|\.jpeg$/i'  => 'image/jpeg',
+    '/\.gif$/i'          => 'image/gif',
+    '/\.png$/i'          => 'image/png',
+    '/\.html$|\.html$/i' => 'text/html',
+    '/\.txt$|\.asc$/i'   => 'text/plain',
+    '/\.xml$|\.xsl$/i'   => 'application/xml',
+    '/\.pdf$/i'          => 'application/pdf'
   );
  
   foreach ($mimes as $regex => $mime) {
-    if (eregi($regex, $filename)) return $mime;
+    if (preg_match($regex, $filename)) return $mime;
   }
  
   // return 'application/octet-stream';
@@ -1157,10 +1166,10 @@ function simplify_path ($path) {
   }
  
   $e = addslashes($delim);
-  $regex = $e . '((\.[^\.' . $e . '][^' . $e . ']*)|(\.\.[^' . $e . ']+)|([^\.][^' . $e . ']*))' . $e . '\.\.' . $e;
+  $regex = '#'.$e . '((\.[^\.' . $e . '][^' . $e . ']*)|(\.\.[^' . $e . ']+)|([^\.][^' . $e . ']*))' . $e . '\.\.' . $e.'#';
  
-  while (ereg($regex, $path)) {
-    $path = ereg_replace($regex, $delim, $path);
+  while (preg_match($regex, $path)) {
+    $path = preg_replace($regex, $delim, $path);
   }
   
   return $path;
