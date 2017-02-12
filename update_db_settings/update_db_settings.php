@@ -1,7 +1,7 @@
 <?php
-/** Script to update the WBCE database setting table entries `wbce_version` and `wbce_tag` with
-  * values read from admin/interface/version.php. You may want to use this script in case you
-  * applied a security patch package instead of doing a clean installation or upgrade.
+/** Script to update the WBCE database settings table entries `wbce_version`, `wbce_tag` and
+  * `rename_files_on_upload` to recommended values. You may want to use this script in case
+  * you applied a security patch package instead of doing a clean installation or upgrade.
   */
 
 // stop script if basic WBCE files are missing
@@ -21,11 +21,16 @@ if ($mysqli->connect_error) {
 
 // update DB entries of 'settings.wbce_version' and 'settings.wbce_tag'
 $version = $mysqli->real_escape_string(NEW_WBCE_VERSION);
-$sql = "UPDATE `" . TABLE_PREFIX . "settings` SET `value`='${version}' WHERE `name`='wbce_version' OR `name`='wbce_tag'";
+$sql1 = "UPDATE `" . TABLE_PREFIX . "settings` SET `value`='${version}' WHERE `name`='wbce_version' OR `name`='wbce_tag'";
+$result1 = $mysqli->query($sql1);
 
-$result = $mysqli->query($sql);
-if($result) {
-	echo '<h3 style="color: green;">Updated settings table values for `wbce_version`, `wbce_tag` to ' . htmlentities(NEW_WBCE_VERSION) . '</h3>';
+// update DB entries of 'settings.rename_files_on_upload'
+$extensions = 'ph.*?,cgi,pl,pm,exe,com,bat,pif,cmd,src,asp,aspx,js,lnk';
+$sql2 = "UPDATE `" . TABLE_PREFIX . "settings` SET `value`='${extensions}' WHERE `name`='rename_files_on_upload'";
+$result2 = $mysqli->query($sql2);
+
+if($result1 && $result2) {
+	echo '<h3 style="color: green;">Sucessfully updated the WBCE database settings table</h3>';
 	// try to remove this script
 	if (unlink(__FILE__)) {
 		echo '<h3 style="color: green;">Automatically removed script "' . basename(__FILE__) . '" from your server.</h3>';
