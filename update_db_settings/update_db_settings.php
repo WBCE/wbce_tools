@@ -4,14 +4,19 @@
   * you applied a security patch package instead of doing a clean installation or upgrade.
   */
 
-// stop script if basic WBCE files are missing
-if (! (file_exists('./config.php') and file_exists('./admin/interface/version.php'))) {
-	die;
+// stop script if WBCE config file is missing
+if (! file_exists('./config.php')) {
+	die('WBCE config.php file not found. Ensure script is uploaded into your WBCE root folder.');
 }
 
-// include WBCE files with DB and version
+// include config file and check for ADMIN_PATH (set in config.php or framework/initialize.php)
 require './config.php';
-require './admin/interface/version.php';
+if (! (defined('ADMIN_PATH') && file_exists(ADMIN_PATH . '/interface/version.php'))) {
+	die('No ADMIN_PATH defined or WBCE version.php file missing.');
+}
+
+// include WBCE version file
+require ADMIN_PATH . '/interface/version.php';
 
 // connect to WBCE DB and check for errors
 $mysqli = new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME);
@@ -30,10 +35,10 @@ $sql2 = "UPDATE `" . TABLE_PREFIX . "settings` SET `value`='${extensions}' WHERE
 $result2 = $mysqli->query($sql2);
 
 if($result1 && $result2) {
-	echo '<h3 style="color: green;">Sucessfully updated the WBCE database settings table</h3>';
+	echo '<h3 style="color: green;">Successfully updated WBCE database settings table</h3>';
 	// try to remove this script
 	if (unlink(__FILE__)) {
-		echo '<h3 style="color: green;">Automatically removed script "' . basename(__FILE__) . '" from your server.</h3>';
+		echo '<h3 style="color: green;">Script "' . basename(__FILE__) . '" was removed from your server.</h3>';
 		die;
 	}
 } else {
