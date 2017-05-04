@@ -1,22 +1,20 @@
 #!/usr/bin/env bash
 #####################################################################
-# WebsiteBaker Community Edition (WBCE)
-# More Baking. Less Struggling.
-# Visit http://wbce.org to learn more and to join the community.
+# Script to automize the Git changelog of WBCE CMS (http://wbce.org)
 #
-# Usage: Call script from a local WBCE Git root folder to dump the
-# commit messages of the WBCE master branch into a CHANGELOG.md file.
+# USAGE: Call script inside a local WBCE Git project folder to dump
+# the commit messages of the active branch to file 'CHANGELOG.md'.
 #
-# @copyright WBCE Project (2015-)
+# @author cwsoft (Christian Sommer)
 # @license GNU GPL2 (or any later version)
 #####################################################################
 # Define some variables
-WBCE_URL=https://github.com/WBCE/WebsiteBaker_CommunityEdition
+WBCE_URL=https://github.com/WBCE/WBCE_CMS
 OUTPUT_FILE=CHANGELOG.md
 
 # Output general header to changelog
 cat > $OUTPUT_FILE << EOT
-# Changelog WebsiteBaker CE
+# Changelog WBCE CMS
 This CHANGELOG was automatically created from a local WBCE Git repository.
 The changelog may therefore not be correct or up-to date.
 Please visit the [WBCE Github]($WBCE_URL/commits) repository for the most up to-date version.
