@@ -1,5 +1,5 @@
 # WBCE - Usefull Tools Collection
-This repository provides some optional tools which may come handy for users of the Content Management System `WBCE`.
+This repository provides some optional tools which may come handy for users of the Content Management System WBCE CMS.
 
 ## Tools
   - [Changelog Creator](changelog_creator/README.md)
