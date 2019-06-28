@@ -16,7 +16,7 @@ be able to see the login mask again.
 
 include ('config.php');
 
-    private function get_client_ip()
+    function get_client_ip()
     {
         $ipaddress = '';
 	if (isset($_SERVER['HTTP_CLIENT_IP']))           $ipaddress = $this->get_server('HTTP_CLIENT_IP');
